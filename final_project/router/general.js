@@ -13,11 +13,7 @@ public_users.post("/register", (req, res) => {
     return res.status(400).json({ message: "Unable to register user. Please provide an username and password." });
   }
 
-  let userExist = users.filter((user) => {
-    return user.username === username;
-  })
-
-  if (userExist.length > 0) {
+  if (isValid(username)) {
     return res.status(400).json({ message: "Unable to register user. User already exist." });
   }
 
