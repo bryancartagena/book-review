@@ -20,7 +20,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
   let isbn = parseInt(req.params.isbn);
 
   if (!isbn || isbn <= 0) {
-    return res.json({ message: "Please provide an isbn code." });
+    return res.status(400).json({ message: "Please provide an isbn code." });
   }
 
   return res.send(books[isbn]);
@@ -28,8 +28,20 @@ public_users.get('/isbn/:isbn', function (req, res) {
 
 // Get book details based on author
 public_users.get('/author/:author', function (req, res) {
-  //Write your code here
-  return res.status(300).json({ message: "Yet to be implemented" });
+  let author = req.params.author;
+  const allBooks = Object.values(books);
+
+  if (!author) {
+    return res.status(400).json({ message: "Please provide an author name" });
+  }
+
+  let book_filtered = allBooks.filter((book) => book.author.toLowerCase() === author.toLowerCase());
+
+  if (book_filtered.length === 0) {
+    return res.status(404).json({ message: `No books found by the author ${author}` });
+  }
+
+  return res.send(book_filtered);
 });
 
 // Get all books based on title
