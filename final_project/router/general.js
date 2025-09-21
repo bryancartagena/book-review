@@ -11,14 +11,19 @@ public_users.post("/register", (req, res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/', function (req, res) {
+public_users.get('/', function (_req, res) {
   return res.send(JSON.stringify(books, null, 4));
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn', function (req, res) {
-  //Write your code here
-  return res.status(300).json({ message: "Yet to be implemented" });
+  let isbn = parseInt(req.params.isbn);
+
+  if (!isbn || isbn <= 0) {
+    return res.json({ message: "Please provide an isbn code." });
+  }
+
+  return res.send(books[isbn]);
 });
 
 // Get book details based on author
